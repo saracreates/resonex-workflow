@@ -1,0 +1,23 @@
+executor: slurm
+jobs: 100
+printshellcmds: true
+use-apptainer: true
+apptainer-args: "-B /export/nfs0home/saumille/resonex -B /DFS-L/DATA/whiteson/saumille" # for nvidia use later --nv -B /srv/"
+use-conda: true
+
+default-resources:
+    slurm_partition: "atlas"
+    # slurm_account: "golling" # not needed?
+    mem_mb_per_cpu: 3000  # 24GB RAM / 8 cores = 3GB per core
+    runtime: 720
+
+# set-resources:
+  # train: # not used rn
+  #   runtime: 720
+  #   # setting 'gpu: 1', instead of adding it to slurm_extra did not work for me
+  #   # (tested) on bamboo, because snakemake also sets '--ntasks-per-gpu=1', which
+  #   # leads to this error in the snakemake slurm logs:
+  #   # > srun: fatal: SLURM_TRES_PER_TASK is mutually exclusive with --ntasks-per-gpu and SLURM_NTASKS_PER_GPU
+  #   slurm_extra: "--nodes=4 --gpus=1"
+  #   slurm_partition: atlas
+  #   mem_mb: 20_000
