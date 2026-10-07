@@ -1,1 +1,20 @@
-base_dir: "/export/nfs0home/saumille/resonex/output"
+base_dir: "/DFS-L/DATA/whiteson/saumille/resonex/dummyrun"
+
+paths:
+  atlas_util_config: "config.yaml"
+  atlas_util: "atlas-util" # general dir to run atlas-utilization in
+  parsed_data_output: "events"
+
+# whether to use existing events or generate new ones
+event_source: "existing" # or "new"
+event_source_path: "/DFS-L/DATA/whiteson/saumille/output_histcreation/atlas_full_fixComb_fixCut_20260919_113627"
+
+# whether to use existing mass histograms or generate new ones
+mass_hist_source: "new" # "existing or "new"
+mass_hist_source_path: "/DFS-L/DATA/whiteson/saumille/output_histcreation/atlas_full_fixComb_fixCut_20260919_113627/histograms/atlas_opendata_full_bumpnet.root"
+
+# atlas util config
+atlas_util_sub:
+  total_files: 100
+  files_per_job: 50
+  
