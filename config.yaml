@@ -17,4 +17,7 @@ mass_hist_source_path: "/DFS-L/DATA/whiteson/saumille/output_histcreation/atlas_
 atlas_util_sub:
   total_files: 100
   files_per_job: 50
-  
+
+# anomaly detection config
+anomaly_detection:
+  method: "none" # or "some_other_method"

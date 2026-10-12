@@ -16,7 +16,7 @@ rule parse_data:
         {LCG_SETUP}
         echo 'Parsing data...'
         cd atlas-utilization/
-        python main.py --tasks parsing --run-dir {events_output} --config {input}
+        python main.py --tasks parsing --run-dir {output} --config {input}
         """
 
 rule masscalc_postproc:
