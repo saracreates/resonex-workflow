@@ -1,4 +1,4 @@
-base_dir: "/DFS-L/DATA/whiteson/saumille/resonex/dummyrun"
+base_dir: "/DFS-L/DATA/whiteson/saumille/resonex/dummyfolder"
 
 paths:
   atlas_util_config: "config.yaml"

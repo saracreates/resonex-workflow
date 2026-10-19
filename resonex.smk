@@ -84,3 +84,6 @@ rule all:
         data=rules.bumpnet_all.input, 
         config=f"{base_dir}/config.yaml"
     default_target: True
+
+# which jobs to NOT run on cluster bc small
+localrules: none, copy_config, all
