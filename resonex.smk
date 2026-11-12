@@ -25,6 +25,7 @@ batches = [i+1 for i in range(num_jobs)]
 
 parsed_data_path = os.path.join(dir_atlas_util, "parsed_data") # output dir 
 ad_method = config["anomaly_detection"]["method"]
+# check which input files to use for AD (=event_output)
 if config["event_source"] == "existing":
     events_output_4AD = os.path.abspath(config["event_source_path"])
     # get number of files in the existing event source path
@@ -43,6 +44,22 @@ dir_bumpnet = os.path.join(base_dir, "bumpnet")
 with open("./BumpNet/configs/snakemake.yaml", "r") as f:
     bumpnet_config = yaml.safe_load(f)
     bumpnet_config["directory"] = dir_bumpnet # overwrite output dir
+    bumpnet_config["container"] = config["bumpnet"]["container_path"] # overwrite container path
+    bumpnet_config["dm_ckpt"] = config["bumpnet"]["bumpnet_model"] # overwrite model checkpoint path
+
+# load and override BumpNet analysis config if specified
+if "analysis_overrides" in config["bumpnet"]:
+    with open(bumpnet_config["analysis_config"], "r") as f:
+        bumpnet_analysis_config = yaml.safe_load(f)
+    # only update those keys
+    for key, values in config["bumpnet"]["analysis_overrides"].items():
+        bumpnet_analysis_config[key].update(values)
+    # save the updated analysis config to a new file
+    os.makedirs(dir_bumpnet, exist_ok=True)
+    analysis_config_path = os.path.join(dir_bumpnet, "analysis_overrides.yaml")
+    with open(analysis_config_path, "w") as f:
+        yaml.dump(bumpnet_analysis_config, f, sort_keys=False)
+    bumpnet_config["analysis_config"] = analysis_config_path
 
 module BumpNet:
     snakefile:
@@ -77,11 +94,16 @@ rule copy_config:
         r"""
         cp {input} {output}
         """
+# set which final plots to create
+bumpnet_plots = [
+    path for path in rules.bumpnet_all.input
+    if any(f"/{variant}/" in path for variant in config["bumpnet"]["plot_variants"])
+]
 
 # create final output from BumpNet workflow
 rule all:
     input:
-        data=rules.bumpnet_all.input, 
+        data=bumpnet_plots,
         config=f"{base_dir}/config.yaml"
     default_target: True
 

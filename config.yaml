@@ -1,4 +1,4 @@
-base_dir: "/DFS-L/DATA/whiteson/saumille/resonex/dummyfolder"
+base_dir: "/DFS-L/DATA/whiteson/saumille/resonex/rebase-check2"
 
 paths:
   atlas_util_config: "config.yaml"
@@ -10,7 +10,7 @@ event_source: "existing" # or "new"
 event_source_path: "/DFS-L/DATA/whiteson/saumille/output_histcreation/atlas_full_fixComb_fixCut_20260919_113627"
 
 # whether to use existing mass histograms or generate new ones
-mass_hist_source: "new" # "existing or "new"
+mass_hist_source: "existing" # "existing or "new"
 mass_hist_source_path: "/DFS-L/DATA/whiteson/saumille/output_histcreation/atlas_full_fixComb_fixCut_20260919_113627/histograms/atlas_opendata_full_bumpnet.root"
 
 # atlas util config
@@ -20,4 +20,19 @@ atlas_util_sub:
 
 # anomaly detection config
 anomaly_detection:
-  method: "none" # or "some_other_method"
+  method: "none" # none or "dummycut"
+
+# bumpnet 
+bumpnet:
+  container_path: "/DFS-L/DATA/whiteson/saumille/BumpNet_20250828.sif"
+  bumpnet_model: "/DFS-L/DATA/whiteson/saumille/BumpNet_paper_model_DMf1w_1_1_1_with_zero_events/best_model.ckpt"
+  # --- Plot variants: each maps to a prediction variant + calibration flag ---
+  # BumpNet: no masking, no calibration (1 variant)
+  # average: masking x calibration (4 variants)
+  # gpr_fast: masking x calibration (4 variants)
+  # rolling_ball: masking x calibration (4 variants)
+  plot_variants: ["BumpNet", "average_nomasking", "average_nomasking_cal"] #, "average_masking", "average_masking_cal", "gpr_fast_nomasking", "gpr_fast_nomasking_cal", "gpr_fast_masking", "gpr_fast_masking_cal", "rolling_ball_nomasking", "rolling_ball_nomasking_cal", "rolling_ball_masking", "rolling_ball_masking_cal"]
+  analysis_overrides: 
+    raw_cuts: 
+      min_num_events: 3.0
+      do_peak_removal: true
